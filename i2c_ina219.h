@@ -6,7 +6,7 @@
 #include "osapi.h"
 
 #define INA219_ADDRESS 0x80
-//#define INA219_ADDRESS 0x81
+//#define INA219_ADDRESS 0x82
 
 #define INA219_REG_CONFIG         0x00
 #define INA219_REG_SHUNTVOLTAGE   0x01
