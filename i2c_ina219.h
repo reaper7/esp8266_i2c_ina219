@@ -76,6 +76,6 @@ enum {
 #define INA219_CONFIG_VALUE  (INA219_RANGE_16V << 13 | INA219_GAIN_80MV << 11 | INA219_BUS_RES_12BIT << 7 | INA219_SHUNT_RES_12BIT_1S << 3)
 
 bool INA219_Init(void);
-uint32_t INA219_GetVal(uint8 val);
+uint32_t INA219_GetVal(uint8 mode);
 
 #endif

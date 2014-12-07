@@ -1,7 +1,5 @@
 /* reaper7 */
 
-#include "c_types.h"
-#include "osapi.h"
 #include "driver/i2c.h"
 #include "driver/i2c_ina219.h"
 
@@ -92,9 +90,9 @@ INA219_Init()
 }
 
 uint32_t ICACHE_FLASH_ATTR
-INA219_GetVal(uint8 val)
+INA219_GetVal(uint8 mode)
 {
-  if (val==CONFIGURE_READ_POWERDOWN) {
+  if (mode==CONFIGURE_READ_POWERDOWN) {
     if (!INA219_writereg16(INA219_REG_CONFIG, (INA219_CONFIG_VALUE | INA219_MODE_SHUNT_BUS_TRIG)))
       return 0;
     _voltage = INA219_readreg16(INA219_REG_BUSVOLTAGE);
@@ -110,13 +108,13 @@ INA219_GetVal(uint8 val)
     if (!INA219_writereg16(INA219_REG_CONFIG, (INA219_CONFIG_VALUE | INA219_MODE_POWER_DOWN)))
       return 0;
     return 1;
-  } else if (val==GET_VOLTAGE) {
+  } else if (mode==GET_VOLTAGE) {
     return _voltage;
-  } else if (val==GET_CURRENT) {
+  } else if (mode==GET_CURRENT) {
     return _current;
-  } else if (val==GET_SHUNT_VOLTAGE) {
+  } else if (mode==GET_SHUNT_VOLTAGE) {
     return _shuntvoltage;
-  } else if (val==GET_POWER) {
+  } else if (mode==GET_POWER) {
     return _power;
   }
   
