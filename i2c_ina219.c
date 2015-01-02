@@ -89,7 +89,7 @@ INA219_Init()
   return 1;
 }
 
-uint32_t ICACHE_FLASH_ATTR
+int32_t ICACHE_FLASH_ATTR
 INA219_GetVal(uint8 mode)
 {
   if (mode==CONFIGURE_READ_POWERDOWN) {
@@ -98,13 +98,16 @@ INA219_GetVal(uint8 mode)
     _voltage = INA219_readreg16(INA219_REG_BUSVOLTAGE);
     _voltage = (_voltage >> 3) * 4;
     _current = INA219_readreg16(INA219_REG_CURRENT);
-    if (((_current) >> (15)) & 0x01)  //nagative
+    if (((_current) >> (15)) & 0x01) { //nagative
       _current = 0;
-    else
-      _current = _current / 10;
-    _shuntvoltage = INA219_readreg16(INA219_REG_SHUNTVOLTAGE);
-    _power = INA219_readreg16(INA219_REG_POWER);
-    _power = _power * 2; 
+      _shuntvoltage = 0;
+      _power = 0;
+    } else {
+      _current = _current / 100;
+      _shuntvoltage = INA219_readreg16(INA219_REG_SHUNTVOLTAGE) / 1000;
+      _power = INA219_readreg16(INA219_REG_POWER) / 10;
+      _power = _power * 2;
+    }
     if (!INA219_writereg16(INA219_REG_CONFIG, (INA219_CONFIG_VALUE | INA219_MODE_POWER_DOWN)))
       return 0;
     return 1;
